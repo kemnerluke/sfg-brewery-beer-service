@@ -1,4 +1,4 @@
-package guru.sfg.brewery.beerservice.model.events;
+package guru.sfg.common.events;
 
 import guru.sfg.brewery.beerservice.model.BeerDto;
 import lombok.NoArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @NoArgsConstructor
-public class BrewBeerEvent extends BeerEvent implements Serializable {
+public class BrewBeerEvent extends BeerEvent {
 
     static final long serialVersionUID = 5294557463904704401L;
 

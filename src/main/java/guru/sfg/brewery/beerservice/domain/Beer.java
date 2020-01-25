@@ -63,8 +63,7 @@ public class Beer {
 
     private String beerName;
 
-    @Enumerated(EnumType.STRING)
-    private BeerStyleEnum beerStyle;
+    private String beerStyle;
 
     @Column(unique = true)
     private String upc;
