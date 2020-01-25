@@ -44,7 +44,8 @@ public class BrewingService {
             log.debug("Inventory is: "  + invQOH);
 
             if(beer.getMinOnHand() >= invQOH){
-               rabbitTemplate.convertAndSend(JmsConfig.BREWING_REQUEST_QUEUE, new BrewBeerEvent(beerMapper.beerToBeerDto(beer)));
+//               rabbitTemplate.convertAndSend(JmsConfig.BREWING_REQUEST_QUEUE, new BrewBeerEvent(beerMapper.beerToBeerDto(beer)));
+                rabbitTemplate.convertAndSend(JmsConfig.BREWING_REQUEST_QUEUE, beer);
 
         ///rabbitTemplate.convertAndSend(JmsConfig.BREWING_REQUEST_QUEUE, "foo.bar.baz", "Hello from RabbitMQ!");
     }

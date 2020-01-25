@@ -32,20 +32,24 @@ public class BrewBeerListener {
     @Scheduled(fixedRate = 5000)//every 5 seconds
     public void listen(){
 
-        BrewBeerEvent brewBeerEvent= (BrewBeerEvent) rabbitTemplate.receiveAndConvert(JmsConfig.BREWING_REQUEST_QUEUE);
-        BeerDto beerDto = brewBeerEvent.getBeerDto();
+        Beer beer= (Beer) rabbitTemplate.receiveAndConvert(JmsConfig.BREWING_REQUEST_QUEUE);
 
-        Beer beer = beerRepository.getOne(beerDto.getId());
+
+//        BrewBeerEvent brewBeerEvent= (BrewBeerEvent) rabbitTemplate.receiveAndConvert(JmsConfig.BREWING_REQUEST_QUEUE);
+//        BeerDto beerDto = brewBeerEvent.getBeerDto();
+
+        Beer beerZero = beerRepository.getOne(beer.getId());
         //Brewing some beer
-        beerDto.setQuantityOnHand(beer.getQuantityToBrew());
+        beer.setQuantityOnHand(beer.getQuantityToBrew());
 
-        NewInventoryEvent newInventoryEvent = new NewInventoryEvent(beerDto);
+//        NewInventoryEvent newInventoryEvent = new NewInventoryEvent(beer);
 
-        log.debug("new inventory equals" + newInventoryEvent.toString() );
+//        log.debug("new inventory equals" + newInventoryEvent.toString() );
 
-        log.debug("Brewed beer " + beer.getMinOnHand() + " : QOH: " +beerDto.getQuantityOnHand());
+        log.debug("Brewed beer " + beer.getMinOnHand() + " : QOH: " +beer.getQuantityOnHand());
         //jmsTemplate.convertAndSend(JmsConfig.NEW_INVENTORY_QUEUE, newInventoryEvent);
-       rabbitTemplate.convertAndSend(JmsConfig.NEW_INVENTORY_QUEUE, newInventoryEvent);
+//       rabbitTemplate.convertAndSend(JmsConfig.NEW_INVENTORY_QUEUE, newInventoryEvent);
+        rabbitTemplate.convertAndSend(JmsConfig.NEW_INVENTORY_QUEUE, beer);
 
 
     }
