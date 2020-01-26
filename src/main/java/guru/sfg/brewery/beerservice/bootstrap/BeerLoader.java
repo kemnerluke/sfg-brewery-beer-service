@@ -2,12 +2,9 @@ package guru.sfg.brewery.beerservice.bootstrap;
 
 
 import guru.sfg.brewery.beerservice.domain.Beer;
-import guru.sfg.brewery.beerservice.domain.Brewery;
 import guru.sfg.brewery.beerservice.model.BeerStyleEnum;
 import guru.sfg.brewery.beerservice.repositories.BeerRepository;
-import guru.sfg.brewery.beerservice.repositories.BreweryRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

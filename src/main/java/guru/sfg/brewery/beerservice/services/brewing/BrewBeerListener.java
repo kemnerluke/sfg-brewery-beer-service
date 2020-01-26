@@ -3,13 +3,9 @@ package guru.sfg.brewery.beerservice.services.brewing;
 
 import guru.sfg.brewery.beerservice.config.JmsConfig;
 import guru.sfg.brewery.beerservice.domain.Beer;
-import guru.sfg.brewery.beerservice.model.BeerDto;
-import guru.sfg.common.events.BrewBeerEvent;
-import guru.sfg.common.events.NewInventoryEvent;
 import guru.sfg.brewery.beerservice.repositories.BeerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.scheduling.annotation.Scheduled;
