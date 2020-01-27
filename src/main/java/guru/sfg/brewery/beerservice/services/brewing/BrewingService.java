@@ -24,12 +24,10 @@ public class BrewingService {
     private final BeerMapper beerMapper;
     private final RabbitTemplate rabbitTemplate;
 
-    //public BrewingService(RabbitTemplate rabbitTemplate) {
-     //   this.rabbitTemplate = rabbitTemplate;
-   // }
 
 
-    @Scheduled(fixedRate = 5000)//every 5 seconds
+
+    @Scheduled(fixedRate = 15000)//every 15 seconds
     public void checkForLowInventory() {
         List<Beer> beers = beerRepository.findAll();
 
@@ -43,10 +41,8 @@ public class BrewingService {
             log.debug("Inventory is: "  + invQOH);
 
             if(beer.getMinOnHand() >= invQOH){
-//               rabbitTemplate.convertAndSend(JmsConfig.BREWING_REQUEST_QUEUE, new BrewBeerEvent(beerMapper.beerToBeerDto(beer)));
                 rabbitTemplate.convertAndSend(JmsConfig.BREWING_REQUEST_QUEUE, beer);
 
-        ///rabbitTemplate.convertAndSend(JmsConfig.BREWING_REQUEST_QUEUE, "foo.bar.baz", "Hello from RabbitMQ!");
     }
 
 });

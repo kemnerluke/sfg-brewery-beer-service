@@ -23,21 +23,18 @@ import java.util.Optional;
 @Service
 public class BeerOrderListener {
 
-   // private final JmsTemplate jmsTemplate;
     private final BeerRepository beerRepository;
     private final RabbitTemplate rabbitTemplate;
 
-    public static final String NEW_BEER_ORDER_QUEUE = "new-beer-order";
 
 
 
     @Transactional
     @JmsListener(destination = JmsConfig.NEW_BEER_ORDER_QUEUE)
-    @Scheduled(fixedRate = 5000)//every 5 seconds
+    @Scheduled(fixedRate = 15000)//every 15 seconds
     public void listen(){
 
         BeerOrder beerOrder= (BeerOrder) rabbitTemplate.receiveAndConvert(JmsConfig.NEW_BEER_ORDER_QUEUE);
- log.debug("im here in beer order inventorty"+beerOrder.toString());
 
     beerOrder.getBeerOrderLines().forEach(beerOrderLine -> {
         log.debug("Beer Order Line"+beerOrderLine.toString());

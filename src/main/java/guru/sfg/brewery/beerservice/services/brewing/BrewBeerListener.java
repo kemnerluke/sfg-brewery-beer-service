@@ -25,26 +25,22 @@ public class BrewBeerListener {
 
     @Transactional
     @JmsListener(destination = JmsConfig.BREWING_REQUEST_QUEUE)
-    @Scheduled(fixedRate = 5000)//every 5 seconds
+    @Scheduled(fixedRate = 15000)//every 15 seconds
     public void listen(){
 
         Beer beer= (Beer) rabbitTemplate.receiveAndConvert(JmsConfig.BREWING_REQUEST_QUEUE);
 
 
-//        BrewBeerEvent brewBeerEvent= (BrewBeerEvent) rabbitTemplate.receiveAndConvert(JmsConfig.BREWING_REQUEST_QUEUE);
-//        BeerDto beerDto = brewBeerEvent.getBeerDto();
+
 
         Beer beerZero = beerRepository.getOne(beer.getId());
         //Brewing some beer
         beer.setQuantityOnHand(beer.getQuantityToBrew());
 
-//        NewInventoryEvent newInventoryEvent = new NewInventoryEvent(beer);
 
-//        log.debug("new inventory equals" + newInventoryEvent.toString() );
 
         log.debug("Brewed beer " + beer.getMinOnHand() + " : QOH: " +beer.getQuantityOnHand());
-        //jmsTemplate.convertAndSend(JmsConfig.NEW_INVENTORY_QUEUE, newInventoryEvent);
-//       rabbitTemplate.convertAndSend(JmsConfig.NEW_INVENTORY_QUEUE, newInventoryEvent);
+
         rabbitTemplate.convertAndSend(JmsConfig.NEW_INVENTORY_QUEUE, beer);
 
 
