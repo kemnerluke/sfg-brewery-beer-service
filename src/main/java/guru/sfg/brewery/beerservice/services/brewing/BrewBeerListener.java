@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class BrewBeerListener {
 
-   // private final JmsTemplate jmsTemplate;
+    // private final JmsTemplate jmsTemplate;
     private final BeerRepository beerRepository;
     private final RabbitTemplate rabbitTemplate;
 
@@ -26,27 +26,27 @@ public class BrewBeerListener {
     @Transactional
     @JmsListener(destination = JmsConfig.BREWING_REQUEST_QUEUE)
     @Scheduled(fixedRate = 5000)//every 5 seconds
-    public void listen(){
+    public void listen() {
 
-        Beer beer= (Beer) rabbitTemplate.receiveAndConvert(JmsConfig.BREWING_REQUEST_QUEUE);
-
-
-//        BrewBeerEvent brewBeerEvent= (BrewBeerEvent) rabbitTemplate.receiveAndConvert(JmsConfig.BREWING_REQUEST_QUEUE);
-//        BeerDto beerDto = brewBeerEvent.getBeerDto();
-
-        Beer beerZero = beerRepository.getOne(beer.getId());
-        //Brewing some beer
-        beer.setQuantityOnHand(beer.getQuantityToBrew());
-
-//        NewInventoryEvent newInventoryEvent = new NewInventoryEvent(beer);
-
-//        log.debug("new inventory equals" + newInventoryEvent.toString() );
-
-        log.debug("Brewed beer " + beer.getMinOnHand() + " : QOH: " +beer.getQuantityOnHand());
-        //jmsTemplate.convertAndSend(JmsConfig.NEW_INVENTORY_QUEUE, newInventoryEvent);
-//       rabbitTemplate.convertAndSend(JmsConfig.NEW_INVENTORY_QUEUE, newInventoryEvent);
-        rabbitTemplate.convertAndSend(JmsConfig.NEW_INVENTORY_QUEUE, beer);
+        Beer beer = (Beer) rabbitTemplate.receiveAndConvert(JmsConfig.BREWING_REQUEST_QUEUE);
 
 
+        if (beer != null) {
+
+            Beer beerZero = beerRepository.getOne(beer.getId());
+
+            beer.setQuantityOnHand(beer.getQuantityToBrew());
+
+
+            log.debug("Brewed beer " + beer.getMinOnHand() + " : QOH: " + beer.getQuantityOnHand());
+
+            rabbitTemplate.convertAndSend(JmsConfig.NEW_INVENTORY_QUEUE, beer);
+
+
+        }
+        else{
+            log.warn("brew beer test beer is null");
+        }
     }
+
 }

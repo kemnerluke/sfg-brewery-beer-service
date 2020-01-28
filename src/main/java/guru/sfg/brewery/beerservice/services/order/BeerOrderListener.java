@@ -39,13 +39,18 @@ public class BeerOrderListener {
         BeerOrder beerOrder= (BeerOrder) rabbitTemplate.receiveAndConvert(JmsConfig.NEW_BEER_ORDER_QUEUE);
  log.debug("im here in beer order inventorty"+beerOrder.toString());
 
-    beerOrder.getBeerOrderLines().forEach(beerOrderLine -> {
-        log.debug("Beer Order Line"+beerOrderLine.toString());
-        Beer beer = beerRepository.findByUpc(beerOrderLine.getUpc());
-         rabbitTemplate.convertAndSend(JmsConfig.BREWING_REQUEST_QUEUE, beer);
-        log.debug("Sending Beer Order to Brewing Request");
-    });
+        if (beerOrder != null) {
 
+            beerOrder.getBeerOrderLines().forEach(beerOrderLine -> {
+                log.debug("Beer Order Line" + beerOrderLine.toString());
+                Beer beer = beerRepository.findByUpc(beerOrderLine.getUpc());
+                rabbitTemplate.convertAndSend(JmsConfig.BREWING_REQUEST_QUEUE, beer);
+                log.debug("Sending Beer Order to Brewing Request");
+            });
+        }
+        else{
+            log.warn("beer order - test beerorder is null");
+        }
 
 }
 }

@@ -101,7 +101,7 @@ public class BeerServiceImpl implements BeerService {
 
         if (beerOptional.isPresent()) {
             log.debug("Found BeerId: " + beerId);
-            if(showInventoryOnHand) {
+            if (showInventoryOnHand) {
                 return beerMapper.beerToBeerDtoWithInventory(beerOptional.get());
             } else {
                 return beerMapper.beerToBeerDto(beerOptional.get());
@@ -144,4 +144,8 @@ public class BeerServiceImpl implements BeerService {
     public BeerDto findBeerByUpc(String upc) {
         return beerMapper.beerToBeerDto(beerRepository.findByUpc(upc));
     }
+
+
+
+
 }
